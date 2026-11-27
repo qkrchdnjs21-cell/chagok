@@ -18,11 +18,13 @@
   /* 서체: 고운바탕(엽서·제목) — 파일에 직접 담아 오프라인에서도 동일하게 보입니다 */
   @font-face{
     font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;
-    src:url('./fonts/gowun-batang.woff2') format('woff2');
+    src:url('./gowun-batang.woff2') format('woff2'),
+        url('./fonts/gowun-batang.woff2') format('woff2');
   }
   @font-face{
     font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;
-    src:url('./fonts/gowun-batang.woff2') format('woff2');
+    src:url('./gowun-batang.woff2') format('woff2'),
+        url('./fonts/gowun-batang.woff2') format('woff2');
   }
   :root{
     --paper:#FAF7F2;
@@ -327,6 +329,38 @@
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   }
 
+  /* photo card */
+  .card.photo{
+    background:#fff;border:1px solid #EFE9DE;border-radius:12px;padding:7px 7px 0;overflow:hidden;
+    box-shadow:0 1px 2px rgba(75,62,45,.04), 0 12px 22px -18px rgba(75,62,45,.4);
+  }
+  .p-frame{
+    position:relative;width:100%;aspect-ratio:1/1;border-radius:9px;overflow:hidden;
+    background:linear-gradient(135deg,#EFE3D3,#DDD0BC);
+  }
+  .p-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .p-frame.no-photo::after{
+    content:'사진을 찾지 못했어요';position:absolute;inset:0;display:grid;place-items:center;
+    font-size:9.5px;color:#A9987F;letter-spacing:-.01em;
+  }
+  .p-body{padding:9px 4px 10px}
+  .p-title{
+    font-size:12px;font-weight:500;line-height:1.5;letter-spacing:-.02em;color:#2F2A25;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .p-text{
+    font-family:var(--serif);font-size:11.5px;line-height:1.72;color:#3A332C;white-space:pre-line;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .p-src{
+    font-size:8.5px;color:#A99B87;margin-top:5px;letter-spacing:-.01em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .p-items{font-size:9px;color:#A98F6A;margin-top:4px;letter-spacing:-.01em}
+  .p-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:8px}
+  .p-label{font-size:8px;letter-spacing:.14em;color:#B78B6C;text-transform:uppercase}
+  .p-date{font-size:8.5px;color:#BCAF9D;flex:none}
+
   /* empty */
   .empty{padding:64px 40px 84px;text-align:center;display:none}
   .empty .mark2{
@@ -446,12 +480,50 @@
   .form[data-type="memo"] #addBody{order:1}
   .form #addUrl[hidden]{display:none}
 
+  /* photo attach */
+  .photo-pick{
+    display:flex;align-items:center;gap:10px;width:100%;margin-top:14px;padding:11px 12px;
+    border:1px dashed #DCCDB8;border-radius:10px;background:#FFFDF8;color:#5E554B;
+    font-family:var(--sans);font-size:11.5px;letter-spacing:-.01em;cursor:pointer;text-align:left;
+    transition:.18s;
+  }
+  .photo-pick:hover{border-color:#CFBBA1;background:#FFFCF5}
+  .photo-pick:active{transform:scale(.995)}
+  .photo-pick.has-photo{border-style:solid;border-color:#E4D8C6;background:#FFFDF8}
+  .photo-pick .cam{font-size:15px;line-height:1;flex:none;filter:saturate(.86)}
+  .photo-pick .pp-txt{min-width:0}
+  .photo-pick b{display:block;font-weight:500;font-size:11.5px;color:#4E4740}
+  .photo-pick i{display:block;font-style:normal;font-size:9px;color:#A99B87;margin-top:2px;letter-spacing:-.01em}
+  .photo-prev{
+    position:relative;margin-top:8px;border-radius:10px;overflow:hidden;
+    border:1px solid #EDE6D9;background:#F6F1E9;
+  }
+  .photo-prev[hidden]{display:none}
+  .photo-prev img{width:100%;max-height:172px;object-fit:cover;display:block}
+  .photo-prev .rm{
+    position:absolute;right:7px;top:7px;width:24px;height:24px;border-radius:50%;border:0;
+    background:rgba(43,39,35,.66);color:#FBF7F1;font-size:11px;line-height:1;display:grid;
+    place-items:center;cursor:pointer;padding:0;
+  }
+  .photo-prev .rm:hover{background:rgba(43,39,35,.82)}
+  .photo-meta{
+    position:absolute;left:7px;bottom:7px;padding:2px 6px;border-radius:5px;
+    background:rgba(43,39,35,.55);color:#FBF7F1;font-size:8.5px;letter-spacing:.01em;
+  }
+
   /* detail sheet */
   #detailBody{margin-top:16px}
   .d-type{font-size:8px;letter-spacing:.2em;color:#B78B6C;text-transform:uppercase;margin-bottom:14px}
   .d-quote{font-family:var(--serif);font-size:16px;line-height:1.95;color:#332E28;white-space:pre-line;letter-spacing:-.015em}
   .d-img{width:100%;border-radius:12px;overflow:hidden;margin-bottom:14px;border:1px solid #EFE9DE}
   .d-img img{width:100%;display:block}
+  .d-photo{
+    width:100%;border-radius:12px;overflow:hidden;margin-bottom:14px;border:1px solid #EFE9DE;
+    background:#F6F1E9;display:grid;place-items:center;
+  }
+  .d-photo img{width:100%;max-height:62vh;object-fit:contain;display:block}
+  .d-photo.no-photo{min-height:120px}
+  .d-photo.no-photo::after{content:'사진을 찾지 못했어요';font-size:10.5px;color:#A9987F}
   .d-title{font-size:14px;font-weight:500;line-height:1.55;color:#2F2A25;letter-spacing:-.02em}
   .d-meta{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:10px;color:#A29483;flex-wrap:wrap}
   .d-memo-title{font-family:var(--serif);font-size:15px;font-weight:700;color:#3A322A;margin-bottom:6px}
@@ -496,10 +568,11 @@
   .toast{
     position:absolute;left:50%;bottom:96px;transform:translate(-50%,12px);z-index:80;
     background:rgba(43,39,35,.94);color:#FBF7F1;font-size:11px;letter-spacing:-.01em;
-    padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.28s;
-    box-shadow:0 10px 24px -12px rgba(0,0,0,.5);white-space:nowrap;max-width:86%;overflow:hidden;text-overflow:ellipsis;
+    padding:10px 16px;border-radius:999px;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .28s,transform .28s,visibility 0s linear .28s;
+    box-shadow:0 10px 24px -12px rgba(0,0,0,.5);white-space:nowrap;width:max-content;max-width:86%;overflow:hidden;text-overflow:ellipsis;
   }
-  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .toast.show{opacity:1;visibility:visible;transform:translate(-50%,0);transition-delay:0s,0s,0s}
   body.sheet-open .toast{bottom:auto;top:calc(14px + var(--sa-top));transform:translate(-50%,-12px)}
   body.sheet-open .toast.show{transform:translate(-50%,0)}
 
@@ -521,6 +594,9 @@
     body:not(.capture) .fab{bottom:calc(var(--sa-bottom) + 24px)}
     body:not(.capture) .menu{top:calc(56px + var(--sa-top))}
     body:not(.capture) .toast{bottom:calc(var(--sa-bottom) + 92px)}
+    /* 시트가 열린 동안에는 위에서 띄우고, 아래(bottom)는 확실히 해제 */
+    body.sheet-open .toast{bottom:auto;top:calc(14px + var(--sa-top));transform:translate(-50%,-12px)}
+    body.sheet-open .toast.show{transform:translate(-50%,0)}
     .sheet{padding-bottom:calc(var(--sa-bottom) + 32px)}
   }
 
@@ -699,7 +775,7 @@
             <div class="sheet-head">
               <div>
                 <h2 id="addTitleH">새로 담기</h2>
-                <p class="sheet-sub">붙여넣거나 적어두면 서랍에 차곡 쌓여요</p>
+                <p class="sheet-sub">링크·글귀·사진을 서랍에 차곡 쌓아요</p>
               </div>
               <button class="x" data-close="add" aria-label="닫기">✕</button>
             </div>
@@ -708,6 +784,20 @@
               <button data-t="link" class="on">링크</button>
               <button data-t="quote">글·명언</button>
               <button data-t="memo">기억할 것</button>
+            </div>
+
+            <input type="file" id="addPhotoFile" accept="image/*" class="sr-only" aria-hidden="true" tabindex="-1">
+            <button type="button" class="photo-pick" id="photoPick" aria-describedby="photoHint">
+              <span class="cam" aria-hidden="true">📷</span>
+              <span class="pp-txt">
+                <b id="photoPickText">사진 고르기</b>
+                <i id="photoHint">긴 변 1200px로 줄여 저장해요 · 제목·메모는 비워도 괜찮아요</i>
+              </span>
+            </button>
+            <div class="photo-prev" id="photoPrev" hidden>
+              <img id="photoPrevImg" alt="붙인 사진 미리보기">
+              <button type="button" class="rm" id="photoClear" aria-label="붙인 사진 빼기">✕</button>
+              <span class="photo-meta" id="photoMeta"></span>
             </div>
 
             <div class="form" id="addForm" data-type="link">
@@ -767,7 +857,10 @@ function safeUrl(u) {
   return /^https?:\/\//i.test(String(u || '')) ? u : '';
 }
 function safeSrc(u) {
-  return /^(https?:\/\/|\.?\/?img\/)/i.test(String(u || '')) ? u : '';
+  const s = String(u || '');
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^(\.\/)?(img\/)?[A-Za-z0-9._-]+\.(png|jpe?g|gif|webp|avif|svg)$/i.test(s)) return s;
+  return '';
 }
 function prettyUrl(u) {
   if (!u) return '';
@@ -826,7 +919,7 @@ function sampleCards() {
       text: '죽는 날까지 하늘을\n우러러 한 점 부끄럼이\n없기를', src: '윤동주, 〈서시〉', example: true },
     { id: 'ex-link-1', type: 'link', drawer: '영상·링크', ts: now - day * 2, date: '11.23',
       title: '조용한 아침을 만드는 10분 루틴 | 미니멀 라이프', ch: '하루의 결', badge: 'YouTube',
-      dur: '12:04', thumb: 'img/example-morning.jpg', url: '', example: true },
+      dur: '12:04', thumb: './example-morning.jpg', url: '', example: true },
     { id: 'ex-memo-1', type: 'memo', drawer: '기억할 것', ts: now - day * 3, date: '11.22', done: false,
       title: '겨울 코트 드라이클리닝',
       items: [{ t: '12/2(수) 오전에 맡기기', d: false }, { t: '주머니 확인하기', d: false }], example: true },
@@ -850,7 +943,8 @@ function normalize(c) {
     title: String(c.title || ''), text: String(c.text || ''), src: String(c.src || ''),
     url: String(c.url || ''), thumb: String(c.thumb || ''), ch: String(c.ch || ''),
     badge: String(c.badge || ''), dur: String(c.dur || ''), note: String(c.note || ''),
-    done: !!c.done, items: items, example: !!c.example
+    done: !!c.done, items: items, example: !!c.example,
+    photo: String(c.photo || ''), photoW: Number(c.photoW) || 0, photoH: Number(c.photoH) || 0
   };
 }
 
@@ -876,9 +970,220 @@ function save() {
   catch (e) { toast('저장 공간이 부족해요'); }
 }
 
+/* ============ 사진 저장소 (IndexedDB · chagok_media_v1) ============ */
+/* 사진은 localStorage(5MB) 대신 IndexedDB에 담습니다. IndexedDB를 못 쓰는
+   환경에서는 localStorage로 대신 저장하고, 그래도 안 되면 알려줍니다. */
+const MEDIA_DB = 'chagok_media_v1';
+const MEDIA_STORE = 'photos';
+const MEDIA_FALLBACK_KEY = 'chagok_media_v1_fallback';
+let mediaDbPromise = null;
+let mediaFallback = null;
+const mediaCache = new Map();
+
+function openMediaDb() {
+  if (mediaDbPromise) return mediaDbPromise;
+  mediaDbPromise = new Promise(resolve => {
+    let settled = false;
+    const done = val => { if (!settled) { settled = true; resolve(val); } };
+    try {
+      if (!('indexedDB' in window) || !window.indexedDB) return done(null);
+      const req = indexedDB.open(MEDIA_DB, 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(MEDIA_STORE)) db.createObjectStore(MEDIA_STORE, { keyPath: 'id' });
+      };
+      req.onsuccess = () => done(req.result);
+      req.onerror = () => done(null);
+      req.onblocked = () => done(null);
+      setTimeout(() => done(null), 5000);
+    } catch (e) { done(null); }
+  });
+  return mediaDbPromise;
+}
+
+function dbPut(db, id, data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(MEDIA_STORE, 'readwrite');
+    tx.objectStore(MEDIA_STORE).put({ id: id, data: data, ts: Date.now() });
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error || new Error('사진을 저장하지 못했어요'));
+    tx.onabort = () => reject(tx.error || new Error('사진을 저장하지 못했어요'));
+  });
+}
+function dbGet(db, id) {
+  return new Promise(resolve => {
+    try {
+      const tx = db.transaction(MEDIA_STORE, 'readonly');
+      const req = tx.objectStore(MEDIA_STORE).get(id);
+      req.onsuccess = () => resolve(req.result ? String(req.result.data || '') : '');
+      req.onerror = () => resolve('');
+    } catch (e) { resolve(''); }
+  });
+}
+function dbDelete(db, id) {
+  return new Promise(resolve => {
+    try {
+      const tx = db.transaction(MEDIA_STORE, 'readwrite');
+      tx.objectStore(MEDIA_STORE).delete(id);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+      tx.onabort = () => resolve(false);
+    } catch (e) { resolve(false); }
+  });
+}
+
+function fbMap() {
+  if (mediaFallback) return mediaFallback;
+  try {
+    const raw = localStorage.getItem(MEDIA_FALLBACK_KEY);
+    const j = raw ? JSON.parse(raw) : {};
+    mediaFallback = (j && typeof j === 'object') ? j : {};
+  } catch (e) { mediaFallback = {}; }
+  return mediaFallback;
+}
+function fbPut(id, data) {
+  const map = fbMap();
+  const prev = map[id];
+  map[id] = data;
+  try { localStorage.setItem(MEDIA_FALLBACK_KEY, JSON.stringify(map)); return true; }
+  catch (e) {
+    if (prev === undefined) delete map[id]; else map[id] = prev;
+    console.warn('사진을 localStorage에 대신 저장하지 못했어요', e);
+    return false;
+  }
+}
+function fbGet(id) { const map = fbMap(); return map[id] || ''; }
+function fbDelete(id) {
+  const map = fbMap();
+  if (map[id] === undefined) return;
+  delete map[id];
+  try { localStorage.setItem(MEDIA_FALLBACK_KEY, JSON.stringify(map)); } catch (e) {}
+}
+
+async function mediaPut(id, data) {
+  if (!id || !data) return false;
+  mediaCache.set(id, data);
+  const db = await openMediaDb();
+  if (db) {
+    try { await dbPut(db, id, data); return true; }
+    catch (e) { console.warn('IndexedDB에 사진을 담지 못해 localStorage로 대신합니다', e); }
+  }
+  return fbPut(id, data);
+}
+
+async function mediaGet(id) {
+  if (!id) return '';
+  if (mediaCache.has(id)) return mediaCache.get(id);
+  const db = await openMediaDb();
+  if (db) {
+    const data = await dbGet(db, id);
+    if (data) { mediaCache.set(id, data); return data; }
+  }
+  const fb = fbGet(id);
+  if (fb) { mediaCache.set(id, fb); return fb; }
+  return '';
+}
+
+async function mediaDelete(id) {
+  if (!id) return;
+  mediaCache.delete(id);
+  const db = await openMediaDb();
+  if (db) await dbDelete(db, id);
+  fbDelete(id);
+}
+
+/* 화면에 그린 사진 카드의 <img data-media="…">를 실제 사진으로 채웁니다 */
+function hydratePhotos(root) {
+  $$('img[data-media]', root || document).forEach(img => {
+    if (img.dataset.hydrated) return;
+    img.dataset.hydrated = '1';
+    const id = img.getAttribute('data-media');
+    const cached = mediaCache.get(id);
+    if (cached) { img.src = cached; return; }
+    mediaGet(id).then(data => {
+      if (data) { img.src = data; return; }
+      const frame = img.closest('.p-frame, .d-photo');
+      if (frame) frame.classList.add('no-photo');
+      img.remove();
+    });
+  });
+}
+
+/* 들어올린 사진을 긴 변 1200px · JPEG 0.82로 줄여 저장합니다 */
+function loadImageEl(file) {
+  return new Promise((resolve, reject) => {
+    const objUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(objUrl); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(objUrl); reject(new Error('사진을 읽지 못했어요')); };
+    img.src = objUrl;
+  });
+}
+
+async function compressPhoto(file) {
+  const MAX = 1200, QUALITY = 0.82;
+  let source = null;
+  try {
+    if (window.createImageBitmap) source = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  } catch (e) { source = null; }
+  if (!source) source = await loadImageEl(file);
+
+  const sw = source.width || source.naturalWidth || 0;
+  const sh = source.height || source.naturalHeight || 0;
+  if (!sw || !sh) throw new Error('사진 크기를 알 수 없어요');
+
+  const scale = Math.min(1, MAX / Math.max(sw, sh));
+  const w = Math.max(1, Math.round(sw * scale));
+  const h = Math.max(1, Math.round(sh * scale));
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('사진을 줄이지 못했어요');
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, w, h);
+  if ('imageSmoothingQuality' in ctx) ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(source, 0, 0, w, h);
+  if (source.close) source.close();
+
+  const data = canvas.toDataURL('image/jpeg', QUALITY);
+  if (!/^data:image\/jpeg/.test(data)) throw new Error('사진을 JPEG로 바꾸지 못했어요');
+  return { data: data, w: w, h: h };
+}
+
+function chagokImgFallback(el) {
+  const alt = el.getAttribute('data-fallback');
+  if (alt) { el.removeAttribute('data-fallback'); el.src = alt; return; }
+  const wrap = el.closest('.d-img');
+  if (wrap) wrap.remove(); else el.remove();
+}
+
 /* ============ 그리기 ============ */
+function photoCardHTML(d, note) {
+  let body = '';
+  if (d.type === 'quote') {
+    body = (d.text ? '<p class="p-text">' + esc(d.text) + '</p>' : '')
+      + (d.src ? '<p class="p-src">' + esc(d.src) + '</p>' : '');
+  } else if (d.type === 'memo') {
+    const items = d.items || [];
+    const done = items.filter(i => i.d).length;
+    body = (d.title ? '<h3 class="p-title">' + esc(d.title) + '</h3>' : '')
+      + (items.length ? '<p class="p-items">' + done + '/' + items.length + ' 기억할 것</p>' : '');
+  } else {
+    body = d.title ? '<h3 class="p-title">' + esc(d.title) + '</h3>' : '';
+  }
+  const label = d.type === 'quote' ? '글 · 명언' : d.type === 'memo' ? '기억할 것' : '사진';
+  const alt = String(d.title || d.text || '사진').replace(/\s+/g, ' ').slice(0, 40);
+  return '<article class="card photo" data-id="' + esc(d.id) + '">'
+    + '<div class="p-frame"><img data-media="' + esc(d.photo) + '" alt="' + esc(alt) + '" loading="lazy"></div>'
+    + '<div class="p-body">' + body + note
+    + '<div class="p-foot"><span class="p-label">' + label + '</span><span class="p-date">' + esc(d.date || '') + '</span></div>'
+    + '</div></article>';
+}
+
 function cardHTML(d) {
   const note = d.note ? '<p class="c-note">' + esc(d.note) + '</p>' : '';
+  if (d.photo) return photoCardHTML(d, note);
 
   if (d.type === 'quote') {
     return '<article class="card quote" data-id="' + esc(d.id) + '">'
@@ -892,8 +1197,9 @@ function cardHTML(d) {
   if (d.type === 'link') {
     const src = safeSrc(d.thumb);
     const dur = d.dur ? '<span class="dur">' + esc(d.dur) + '</span>' : '';
+    const fb = /example-morning\.jpg$/i.test(src) ? ' data-fallback="./img/example-morning.jpg"' : '';
     const thumbBlock = src
-      ? '<div class="thumb"><img src="' + esc(src) + '" alt="" loading="lazy" onerror="this.remove()"><span class="play"></span>' + dur + '</div>'
+      ? '<div class="thumb"><img src="' + esc(src) + '" alt="" loading="lazy"' + fb + ' onerror="chagokImgFallback(this)"><span class="play"></span>' + dur + '</div>'
       : '<div class="thumb fallback"><span class="tf-letter">' + esc((d.badge || '링크').trim().charAt(0).toUpperCase()) + '</span></div>';
     return '<article class="card link" data-id="' + esc(d.id) + '">'
       + thumbBlock
@@ -936,6 +1242,7 @@ function visibleCards() {
 function render(animate) {
   const list = visibleCards();
   grid.innerHTML = list.map(cardHTML).join('');
+  hydratePhotos(grid);
   $('#empty').style.display = list.length ? 'none' : 'block';
   grid.style.display = list.length ? '' : 'none';
   $('#listEnd').style.display = list.length >= 2 ? 'flex' : 'none';
@@ -1168,6 +1475,31 @@ function saveShare() {
 
 /* ============ 새로 담기 시트 ============ */
 let addType = 'link';
+let addPhoto = null;        // { data, w, h, name }
+let addPhotoBusy = false;
+let addSaving = false;
+
+function setAddPhoto(next) {
+  addPhoto = next || null;
+  const prev = $('#photoPrev');
+  const pick = $('#photoPick');
+  const pickText = $('#photoPickText');
+  if (!prev || !pick || !pickText) return;
+  if (!addPhoto) {
+    prev.hidden = true;
+    const img = $('#photoPrevImg');
+    if (img) img.removeAttribute('src');
+    $('#photoMeta').textContent = '';
+    pick.classList.remove('has-photo');
+    pickText.textContent = '사진 고르기';
+    return;
+  }
+  $('#photoPrevImg').src = addPhoto.data;
+  $('#photoMeta').textContent = addPhoto.w + '×' + addPhoto.h + ' · ' + Math.max(1, Math.round(addPhoto.data.length * 0.75 / 1024)) + 'KB';
+  prev.hidden = false;
+  pick.classList.add('has-photo');
+  pickText.textContent = '다른 사진 고르기';
+}
 
 function syncSeg() {
   $$('#seg button').forEach(b => b.classList.toggle('on', b.dataset.t === addType));
@@ -1190,6 +1522,7 @@ function syncSeg() {
 function openAdd(type, prefill) {
   addType = type || 'link';
   syncSeg();
+  setAddPhoto(null);
   $('#addUrl').value = (prefill && prefill.url) || '';
   $('#addTitle').value = (prefill && prefill.title) || '';
   $('#addBody').value = (prefill && prefill.text) || '';
@@ -1200,46 +1533,73 @@ function openAdd(type, prefill) {
   }, 300);
 }
 
-function saveAdd() {
+async function saveAdd() {
+  if (addSaving) return;
   const title = $('#addTitle').value.trim();
   const body = $('#addBody').value.trim();
   const url = $('#addUrl').value.trim();
+  const photo = addPhoto;
   const card = { id: uid(), type: addType, ts: Date.now(), date: today(), note: '' };
 
   if (addType === 'quote') {
-    if (!body) { toast('글귀를 적어주세요'); $('#addBody').focus(); return; }
+    if (!body && !photo) { toast('글귀를 적거나 사진을 붙여주세요'); $('#addBody').focus(); return; }
     card.drawer = '글·명언';
     card.text = body;
-    card.src = title || '내가 적음';
-    card.title = title || body.split('\n')[0];
+    card.src = title || (photo ? '' : '내가 적음');
+    card.title = title || (photo ? '' : body.split('\n')[0]);
   } else if (addType === 'memo') {
-    if (!title) { toast('제목을 적어주세요'); $('#addTitle').focus(); return; }
+    if (!title && !photo) { toast('제목을 적거나 사진을 붙여주세요'); $('#addTitle').focus(); return; }
     card.drawer = '기억할 것';
     card.title = title;
     card.items = body.split('\n').map(s => s.trim()).filter(Boolean).map(t => ({ t: t, d: false }));
     card.done = false;
   } else {
-    if (!url && !title) { toast('링크를 붙여넣어 주세요'); $('#addUrl').focus(); return; }
+    if (!url && !title && !photo) { toast('링크나 사진을 먼저 담아주세요'); $('#addUrl').focus(); return; }
     const id = ytId(url), host = hostOf(url);
     card.drawer = '영상·링크';
     card.url = url;
-    card.title = title || (id ? '유튜브 영상' : (host || '새 링크'));
-    card.badge = id ? 'YouTube' : (host || '링크');
+    card.title = title || (url ? (id ? '유튜브 영상' : (host || '새 링크')) : '');
+    card.badge = id ? 'YouTube' : (host || (photo ? '' : '링크'));
     card.ch = id ? 'YouTube' : '';
     card.thumb = id ? ytThumb(id) : '';
     card.dur = '';
     card.note = body;
   }
 
+  addSaving = true;
+  const btn = $('#addSave');
+  const btnLabel = btn.textContent;
+  try {
+    if (photo) {
+      btn.disabled = true;
+      btn.textContent = '사진 담는 중…';
+      const mediaId = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      const ok = await mediaPut(mediaId, photo.data);
+      if (!ok) throw new Error('사진을 저장하지 못했어요');
+      card.photo = mediaId;
+      card.photoW = photo.w;
+      card.photoH = photo.h;
+    }
+  } catch (err) {
+    console.warn('사진을 담지 못했어요', err);
+    toast('사진을 담지 못했어요 — 저장 공간을 확인해 주세요');
+    return;
+  } finally {
+    addSaving = false;
+    btn.disabled = false;
+    btn.textContent = btnLabel;
+  }
+
   cards.unshift(card);
   save();
   $('#addTitle').value = ''; $('#addBody').value = ''; $('#addUrl').value = '';
+  setAddPhoto(null);
   closeSheet();
   state.q = ''; $('#q').value = ''; $('#searchBox').classList.remove('has-text');
   state.drawer = card.drawer;
   render(true);
   $('#scroll').scrollTo({ top: 0, behavior: 'smooth' });
-  toast('‘' + short(card.title || card.text) + '’ ' + card.drawer + '에 담았어요');
+  toast('‘' + short(card.title || card.text || '사진') + '’ ' + card.drawer + '에 담았어요');
   if (card.type === 'link' && ytId(card.url)) enrichCard(card);
 }
 
@@ -1248,15 +1608,19 @@ let detailId = null;
 
 function detailHTML(d) {
   let head = '';
+  if (d.photo) {
+    const alt = String(d.title || d.text || '사진').replace(/\s+/g, ' ').slice(0, 40);
+    head += '<div class="d-photo"><img data-media="' + esc(d.photo) + '" alt="' + esc(alt) + '"></div>';
+  }
   if (d.type === 'quote') {
-    head = '<div class="d-type">글 · 명언</div><p class="d-quote">' + esc(d.text) + '</p>';
+    head += '<div class="d-type">글 · 명언</div><p class="d-quote">' + esc(d.text) + '</p>';
   } else if (d.type === 'link') {
     const src = safeSrc(d.thumb);
-    head = '<div class="d-type">영상 · 링크</div>'
+    head += '<div class="d-type">' + (d.photo ? '사진' : '영상 · 링크') + '</div>'
       + (src ? '<div class="d-img"><img src="' + esc(src) + '" alt="" onerror="this.parentNode.remove()"></div>' : '')
       + '<div class="d-title">' + esc(d.title || '') + '</div>';
   } else {
-    head = '<div class="d-type">기억할 것</div><div class="d-memo-title">' + esc(d.title || '') + '</div>';
+    head += '<div class="d-type">기억할 것</div><div class="d-memo-title">' + esc(d.title || '') + '</div>';
     if ((d.items || []).length) {
       head += '<div class="chk">' + d.items.map((it, i) =>
         '<button class="chk-row' + (it.d ? ' on' : '') + '" data-item="' + i + '">'
@@ -1293,13 +1657,16 @@ function openDetail(id) {
   if (!d) return;
   detailId = id;
   $('#detailBody').innerHTML = detailHTML(d);
+  hydratePhotos($('#detailBody'));
   openSheet('detailOverlay');
   const sheet = $('#detailSheet');
   if (sheet) sheet.scrollTop = 0;
 }
 
 function deleteCard(id) {
+  const gone = cards.find(c => c.id === id);
   cards = cards.filter(c => c.id !== id);
+  if (gone && gone.photo) mediaDelete(gone.photo);
   save();
   render(false);
   closeSheet();
@@ -1416,6 +1783,33 @@ $$('#seg button').forEach(b => {
   });
 });
 $('#addSave').addEventListener('click', saveAdd);
+
+/* 사진 첨부 */
+$('#photoPick').addEventListener('click', () => $('#addPhotoFile').click());
+$('#photoClear').addEventListener('click', e => { e.preventDefault(); setAddPhoto(null); });
+$('#addPhotoFile').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!f || addPhotoBusy) return;
+  if (f.type && !/^image\//.test(f.type)) { toast('사진 파일만 고를 수 있어요'); return; }
+  addPhotoBusy = true;
+  const pickText = $('#photoPickText');
+  const back = pickText.textContent;
+  pickText.textContent = '사진을 줄이는 중…';
+  $('#photoPick').disabled = true;
+  try {
+    const out = await compressPhoto(f);
+    setAddPhoto({ data: out.data, w: out.w, h: out.h, name: f.name || '' });
+    toast('사진을 붙였어요');
+  } catch (err) {
+    console.warn('사진을 줄이지 못했어요', err);
+    pickText.textContent = back;
+    toast('사진을 읽지 못했어요 — 다른 사진으로 해보세요');
+  } finally {
+    addPhotoBusy = false;
+    $('#photoPick').disabled = false;
+  }
+});
 $('#addTitle').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); saveAdd(); } });
 
 /* menu */
@@ -1452,8 +1846,16 @@ $('#miExample').addEventListener('click', () => {
   toast('예시 카드 ' + n + '장을 지웠어요');
 });
 
-function exportJson() {
-  const payload = { app: 'chagok', version: 1, exportedAt: new Date().toISOString(), cards: cards };
+async function exportJson() {
+  const ids = [];
+  cards.forEach(c => { if (c.photo && ids.indexOf(c.photo) < 0) ids.push(c.photo); });
+  if (ids.length) toast('사진 ' + ids.length + '장까지 함께 백업하는 중…');
+  const media = [];
+  for (const id of ids) {
+    const data = await mediaGet(id);
+    if (data) media.push({ id: id, data: data });
+  }
+  const payload = { app: 'chagok', version: 2, exportedAt: new Date().toISOString(), cards: cards, media: media };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1464,7 +1866,7 @@ function exportJson() {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
-  toast(cards.length + '장을 JSON으로 내보냈어요');
+  toast(cards.length + '장' + (media.length ? ' · 사진 ' + media.length + '장' : '') + '을 JSON으로 내보냈어요');
 }
 $('#miExport').addEventListener('click', () => { hideMenu(); exportJson(); });
 $('#miImport').addEventListener('click', () => { hideMenu(); $('#importFile').click(); });
@@ -1473,11 +1875,17 @@ $('#importFile').addEventListener('change', e => {
   const f = e.target.files && e.target.files[0];
   if (!f) return;
   const reader = new FileReader();
-  reader.onload = () => {
+  reader.onload = async () => {
     try {
       const j = JSON.parse(String(reader.result));
       const list = Array.isArray(j) ? j : (j && Array.isArray(j.cards) ? j.cards : null);
       if (!list) throw new Error('형식이 달라요');
+      const media = (j && Array.isArray(j.media)) ? j.media : [];
+      let restored = 0;
+      for (const m of media) {
+        if (!m || typeof m.id !== 'string' || !/^data:image\//.test(String(m.data || ''))) continue;
+        if (await mediaPut(m.id, String(m.data))) restored++;
+      }
       const norm = list.map(normalize).filter(Boolean);
       const have = new Set(cards.map(c => c.id));
       let added = 0;
@@ -1485,7 +1893,8 @@ $('#importFile').addEventListener('change', e => {
       cards.sort((a, b) => b.ts - a.ts);
       save();
       render(true);
-      toast(added ? added + '장을 가져왔어요' : '새로 가져올 카드가 없어요');
+      const photoNote = restored ? ' · 사진 ' + restored + '장' : '';
+      toast(added ? added + '장' + photoNote + '을 가져왔어요' : '새로 가져올 카드가 없어요');
     } catch (err) {
       toast('JSON 파일을 읽지 못했어요');
     }

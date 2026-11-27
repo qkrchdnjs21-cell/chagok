@@ -1,13 +1,14 @@
 /* 차곡 — 오프라인 앱 셸 캐시 */
-const VERSION = 'chagok-v2';
+/* v3: 사진 저장(IndexedDB) 지원 · GitHub 루트에 올린 서체·예시 사진 경로 반영 */
+const VERSION = 'chagok-v3';
 const SHELL = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  './fonts/gowun-batang.woff2',
-  './img/example-morning.jpg'
+  './gowun-batang.woff2',
+  './example-morning.jpg'
 ];
 
 self.addEventListener('install', event => {
