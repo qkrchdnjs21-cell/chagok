@@ -40,6 +40,9 @@
     --brass:#B08A5E;
     --serif:'Gowun Batang', 'Apple SD Gothic Neo', 'Nanum Myeongjo', serif;
     --sans:-apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Noto Sans CJK KR', sans-serif;
+    /* 상단 상태바·하단 내비게이션 바 여백 (스크립트가 실측값으로 덮어씁니다) */
+    --sa-top:env(safe-area-inset-top, 0px);
+    --sa-bottom:env(safe-area-inset-bottom, 0px);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
@@ -60,7 +63,7 @@
 
   /* ---------- desktop board ---------- */
   .board{
-    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;
     gap:clamp(40px,7vw,110px);padding:56px 40px;position:relative;z-index:1;
   }
   .intro{max-width:330px;padding-bottom:20px}
@@ -121,7 +124,7 @@
   /* ---------- scroll area ---------- */
   .scroll{position:absolute;left:0;right:0;top:44px;bottom:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
   .scroll::-webkit-scrollbar{display:none}
-  .scroll::after{content:'';display:block;height:104px}
+  .scroll::after{content:'';display:block;height:calc(var(--sa-bottom) + 104px)}
   body.sheet-open .scroll{overflow:hidden}
 
   /* ---------- topbar ---------- */
@@ -357,7 +360,8 @@
   .sheet{
     width:100%;background:#FFFCF7;border-radius:22px 22px 0 0;padding:8px 20px 26px;
     transform:translateY(18px);transition:transform .32s cubic-bezier(.22,.9,.3,1);
-    box-shadow:0 -18px 40px -20px rgba(50,38,26,.45);max-height:92%;overflow-y:auto;scrollbar-width:none;
+    box-shadow:0 -18px 40px -20px rgba(50,38,26,.45);max-height:92%;max-height:85dvh;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior:contain;
   }
   .sheet::-webkit-scrollbar{display:none}
   .overlay.show .sheet{transform:translateY(0)}
@@ -496,7 +500,7 @@
     box-shadow:0 10px 24px -12px rgba(0,0,0,.5);white-space:nowrap;max-width:86%;overflow:hidden;text-overflow:ellipsis;
   }
   .toast.show{opacity:1;transform:translate(-50%,0)}
-  body.sheet-open .toast{bottom:auto;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-12px)}
+  body.sheet-open .toast{bottom:auto;top:calc(14px + var(--sa-top));transform:translate(-50%,-12px)}
   body.sheet-open .toast.show{transform:translate(-50%,0)}
 
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -513,10 +517,11 @@
     .home-bar{display:none}
     body:not(.capture) .status{display:none}
     body:not(.capture) .scroll{top:0}
-    body:not(.capture) .topbar{padding-top:calc(14px + env(safe-area-inset-top))}
-    body:not(.capture) .fab{bottom:calc(22px + env(safe-area-inset-bottom))}
-    body:not(.capture) .menu{top:calc(56px + env(safe-area-inset-top))}
-    .sheet{padding-bottom:calc(26px + env(safe-area-inset-bottom))}
+    body:not(.capture) .topbar{padding-top:calc(14px + var(--sa-top))}
+    body:not(.capture) .fab{bottom:calc(var(--sa-bottom) + 24px)}
+    body:not(.capture) .menu{top:calc(56px + var(--sa-top))}
+    body:not(.capture) .toast{bottom:calc(var(--sa-bottom) + 92px)}
+    .sheet{padding-bottom:calc(var(--sa-bottom) + 32px)}
   }
 
   /* capture mode (?only=app) */
@@ -1538,6 +1543,34 @@ function registerSW() {
     }).catch(err => console.warn('오프라인 준비를 못 했어요', err));
   });
 }
+
+/* ============ 상태바·내비게이션 바 여백 실측 ============ */
+/* 안드로이드 3버튼 내비게이션 바는 앱 화면 위에 겹쳐 그려지는데, 이때도
+   env(safe-area-inset-bottom)이 0으로 오는 기기가 있어 아래가 잘립니다.
+   실측값이 0이면 표준 높이(상단 28px · 하단 48px)를 대신 확보합니다. */
+function readSafeInset(side) {
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding-' + side + ':env(safe-area-inset-' + side + ', 0px)';
+  document.documentElement.appendChild(probe);
+  const val = parseFloat(getComputedStyle(probe).getPropertyValue('padding-' + side)) || 0;
+  probe.remove();
+  return val;
+}
+function applySafeArea() {
+  const root = document.documentElement.style;
+  if (!window.matchMedia('(max-width: 960px)').matches) {
+    root.removeProperty('--sa-top');
+    root.removeProperty('--sa-bottom');
+    return;
+  }
+  const top = readSafeInset('top');
+  const bottom = readSafeInset('bottom');
+  root.setProperty('--sa-top', (top > 0 ? top : 28) + 'px');
+  root.setProperty('--sa-bottom', (bottom > 0 ? bottom : 48) + 'px');
+}
+applySafeArea();
+window.addEventListener('resize', applySafeArea);
+window.addEventListener('orientationchange', () => setTimeout(applySafeArea, 150));
 
 function boot() {
   const params = new URLSearchParams(location.search);

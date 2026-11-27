@@ -1,5 +1,5 @@
 /* 차곡 — 오프라인 앱 셸 캐시 */
-const VERSION = 'chagok-v1';
+const VERSION = 'chagok-v2';
 const SHELL = [
   './',
   './index.html',
